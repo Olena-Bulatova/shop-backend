@@ -1,0 +1,74 @@
+[
+  {
+      "count": 10,
+      "description": "In a city where fire, water, land and air residents live together, a fiery young woman and a go-with-the-flow guy will discover something elemental: how much they have in common.",
+      "id": "976573",
+      "price": 27.99,
+      "title": "Elemental",
+      "posterPath": "/4Y1WNkd88JXmGfhtWR7dmDAo1T2.jpg"
+  },
+  {
+      "count": 12,
+      "description": "Carl Fredricksen reluctantly agrees to go on a date with a lady friend—but admittedly has no idea how dating works these days. Ever the helpful friend, Dug steps in to calm Carl's pre-date jitters and offer some tried-and-true tips for making friends—if you're a dog.",
+      "id": "1076364",
+      "price": 9.99,
+      "title": "Carl's Date",
+      "posterPath": "/y8NtM6q3PzntqyNRNw6wgicwRYl.jpg"
+  },
+  {
+      "count": 1,
+      "description": "After reuniting with Gwen Stacy, Brooklyn’s full-time, friendly neighborhood Spider-Man is catapulted across the Multiverse, where he encounters the Spider Society, a team of Spider-People charged with protecting the Multiverse’s very existence. But when the heroes clash on how to handle a new threat, Miles finds himself pitted against the other Spiders and must set out on his own to save those he loves most.",
+      "id": "569094",
+      "price": 23.49,
+      "title": "Spider-Man: Across the Spider-Verse",
+      "posterPath": "/8Vt6mWEReuy4Of61Lnj5Xj704m8.jpg"
+  },
+  {
+      "count": 14,
+      "description": "While working underground to fix a water main, Brooklyn plumbers—and brothers—Mario and Luigi are transported down a mysterious pipe and wander into a magical new world. But when the brothers are separated, Mario embarks on an epic quest to find Luigi.",
+      "id": "502356",
+      "price": 14.5,
+      "title": "The Super Mario Bros. Movie",
+      "posterPath": "/qNBAXBIQlnOThrVvA6mA2B5ggV6.jpg"
+  },
+  {
+      "count": 11,
+      "description": "After years of being sheltered from the human world, the Turtle brothers set out to win the hearts of New Yorkers and be accepted as normal teenagers through heroic acts. Their new friend April O'Neil helps them take on a mysterious crime syndicate, but they soon get in over their heads when an army of mutants is unleashed upon them.",
+      "id": "614930",
+      "price": 7.6,
+      "title": "Teenage Mutant Ninja Turtles: Mutant Mayhem",
+      "posterPath": "/ueO9MYIOHO7M1PiMUeX74uf8fB9.jpg"
+  },
+  {
+      "count": 6,
+      "description": "When the Justice League goes missing and villains overrun Metropolis, there's only one team that can solve this mystery: Scooby-Doo and the gang! But wait, there's a new dog in town – Krypto – Superman's Superdog with Super Powers. Mystery Inc. will need all the help it can get when phantoms menace the Justice League's headquarters.",
+      "id": "1146348",
+      "price": 4,
+      "title": "Scooby-Doo! And Krypto, Too!",
+      "posterPath": "/ntMOnvlYYnio7Fx3xqBu9B1Sz7f.jpg"
+  },
+  {
+      "count": 3,
+      "description": "A magical meteor crash-lands in Adventure City, gives the PAW Patrol pups superpowers, and transforms them into The Mighty Pups. When the Patrol's archrival Humdinger breaks out of jail and teams up with mad scientist Victoria Vance to steal the powers for themselves, the Mighty Pups must save Adventure City and stop the supervillains before it's too late.",
+      "id": "893723",
+      "price": 7.8,
+      "title": "PAW Patrol: The Mighty Movie",
+      "posterPath": "/aTvePCU7exLepwg5hWySjwxojQK.jpg"
+  },
+  {
+      "count": 1,
+      "description": "A life of an ordinary Parisian teenager Marinette goes superhuman when she becomes Ladybug. Bestowed with magical powers of creation, Ladybug must unite with her opposite, Cat Noir, to save Paris as a new villain unleashes chaos unto the city.",
+      "id": "496450",
+      "price": 15,
+      "title": "Miraculous - le film",
+      "posterPath": "/bBON9XO9Ek0DjRwMBnJNCwC96Cd.jpg"
+  },
+  {
+      "count": 12,
+      "description": "Despite his family’s baffling generations-old ban on music, Miguel dreams of becoming an accomplished musician like his idol, Ernesto de la Cruz. Desperate to prove his talent, Miguel finds himself in the stunning and colorful Land of the Dead following a mysterious chain of events. Along the way, he meets charming trickster Hector, and together, they set off on an extraordinary journey to unlock the real story behind Miguel's family history.",
+      "id": "354912",
+      "price": 50.9,
+      "title": "Coco",
+      "posterPath": "/gGEsBPAijhVUFoiNpgZXqRVWJt2.jpg"
+  }
+]
