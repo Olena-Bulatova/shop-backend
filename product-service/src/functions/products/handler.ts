@@ -2,10 +2,13 @@ import type { ValidatedEventAPIGatewayProxyEvent } from '@libs/api-gateway';
 import { formatJSONResponse } from '@libs/api-gateway';
 import { StatusCode } from '../../constants/http';
 import { getProducts } from '../../utils/products';
-import { HttpErrorResponse } from 'src/errors/http-error-response';
+import { HttpErrorResponse } from '../../validations/http-error-response';
 import { Product } from '../../types/products';
+import { middyfy } from '@libs/lambda';
 
-const getProductsHandler: ValidatedEventAPIGatewayProxyEvent<null> = async () => {
+const getProductsHandler: ValidatedEventAPIGatewayProxyEvent<null> = async (event) => {
+  console.log('getProductsHandler, event:', event);
+
   try {
     const products = await getProducts();
 
@@ -17,5 +20,4 @@ const getProductsHandler: ValidatedEventAPIGatewayProxyEvent<null> = async () =>
   }
 };
 
-export const main = getProductsHandler;
-
+export const main = middyfy(getProductsHandler);
