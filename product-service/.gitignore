@@ -13,3 +13,9 @@ swagger
 
 # test coverage
 coverage
+
+# dynamo_db init
+scripts
+
+# enviroments variables
+.env

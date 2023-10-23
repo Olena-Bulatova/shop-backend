@@ -3,7 +3,7 @@ import { main } from './handler';
 import * as productsActions from '../../utils/products';
 import * as apiGateway from '@libs/api-gateway';
 import { ErrorMessages, ErrorName, StatusCode } from 'src/constants/http';
-import { HttpErrorResponse } from '../../errors/http-error-response';
+import { HttpErrorResponse } from '../../validations/http-error-response';
 
 const event: APIGatewayProxyEvent = {
   headers: {
@@ -28,8 +28,8 @@ describe('getProductsByIdHandler', () => {
       "title": "Coco",
       "posterPath": "/gGEsBPAijhVUFoiNpgZXqRVWJt2.jpg"
     };
-    jest.spyOn(productsActions, 'getProductsById').mockImplementationOnce(() => product);
-    const result = await main(event, this, () => { }) as APIGatewayProxyResult;
+    jest.spyOn(productsActions, 'getProductsById').mockImplementationOnce(() => Promise.resolve(product));
+    const result = await main(event as any, this, () => { }) as APIGatewayProxyResult;
 
     expect(result.statusCode).toEqual(StatusCode.SUCCESS);
     expect(result.body).toEqual(JSON.stringify({ product }));
@@ -37,7 +37,7 @@ describe('getProductsByIdHandler', () => {
 
   test('should call getProductsById', async () => {
     const spy = jest.spyOn(productsActions, 'getProductsById');
-    await main(event, this, () => { }) as APIGatewayProxyResult;
+    await main(event as any, this, () => { }) as APIGatewayProxyResult;
 
     expect(spy).toHaveBeenCalledWith(event.pathParameters.id);
   });
@@ -45,7 +45,7 @@ describe('getProductsByIdHandler', () => {
   test('should call formatJSONResponse with error if id is not defined', async () => {
     const spy = jest.spyOn(apiGateway, 'formatJSONResponse');
     const error = new HttpErrorResponse(StatusCode.BAD_REQUEST, ErrorName.BAD_REQUEST, ErrorMessages.invalidId)
-    await main({ ...event, pathParameters: {} }, this, () => { }) as APIGatewayProxyResult;
+    await main({ ...event, pathParameters: {} } as any, this, () => { }) as APIGatewayProxyResult;
 
     expect(spy).toHaveBeenCalledWith(StatusCode.BAD_REQUEST, error);
   });
@@ -54,7 +54,7 @@ describe('getProductsByIdHandler', () => {
     const spy = jest.spyOn(apiGateway, 'formatJSONResponse');
     const id = '1111';
     const error = new HttpErrorResponse(StatusCode.NOT_FOUND, ErrorName.NOT_FOUND, ErrorMessages.productNotFound(id));
-    await main({ ...event, pathParameters: { id } }, this, () => { }) as APIGatewayProxyResult;
+    await main({ ...event, pathParameters: { id } } as any, this, () => { }) as APIGatewayProxyResult;
 
     expect(spy).toHaveBeenCalledWith(StatusCode.NOT_FOUND, error);
   });
@@ -62,7 +62,7 @@ describe('getProductsByIdHandler', () => {
   test('should call formatJSONResponse with error', async () => {
     jest.spyOn(productsActions, 'getProductsById').mockImplementationOnce(() => { throw new Error('Error') });
     const spy = jest.spyOn(apiGateway, 'formatJSONResponse');
-    await main(event, this, () => { }) as APIGatewayProxyResult;
+    await main(event as any, this, () => { }) as APIGatewayProxyResult;
     const error = new HttpErrorResponse();
 
     expect(spy).toHaveBeenCalledWith(StatusCode.INTERNAL_SERVER, error);
