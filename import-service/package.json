@@ -17,7 +17,8 @@
     "@middy/core": "^3.4.0",
     "@middy/http-json-body-parser": "^3.4.0",
     "csv-parser": "^3.0.0",
-    "dotenv": "^16.3.1"
+    "dotenv": "^16.3.1",
+    "strip-bom-stream": "^5.0.0"
   },
   "devDependencies": {
     "@serverless/typescript": "^3.0.0",

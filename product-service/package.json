@@ -6,8 +6,8 @@
   "scripts": {
     "deploy": "sls deploy",
     "offline": "sls offline",
-    "fill-products": "aws dynamodb batch-write-item --request-items file://product-service/src/collections/products.marshall.json",
-    "fill-stocks": "aws dynamodb batch-write-item --request-items file://product-service/src/collections/stocks.marshall.json",
+    "fill-products": "aws dynamodb batch-write-item --request-items file://src/collections/products.marshall.json",
+    "fill-stocks": "aws dynamodb batch-write-item --request-items file://src/collections/stocks.marshall.json",
     "fill-db-tables": "npm run fill-products && npm run fill-stocks",
     "test": "jest"
   },

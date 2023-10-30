@@ -1,7 +1,9 @@
 
 import { CopyObjectCommand, DeleteObjectCommand, GetObjectCommand, GetObjectCommandOutput, S3Client } from '@aws-sdk/client-s3';
+import { SQS } from 'aws-sdk';
 import { ImportFileBucketParams } from '../interfaces/import';
 import csv from 'csv-parser';
+import stripBom from 'strip-bom-stream';
 
 const moveParsedFiles = async (client: S3Client, { bucket, key, destinationKey }: ImportFileBucketParams) => {
   const sourcePrefix = key.split('/')[0];
@@ -13,11 +15,39 @@ const moveParsedFiles = async (client: S3Client, { bucket, key, destinationKey }
   await client.send(deleteCommand);
 };
 
+const sendMessageToSQS = ({ region }: ImportFileBucketParams, data: unknown) => {
+  const sqs = new SQS({ region });
+
+  sqs.sendMessage({
+    QueueUrl: process.env.SQS_URL,
+    MessageBody: JSON.stringify(data)
+  }, (error, data) => {
+    if (error) {
+      console.log('error: ', error);
+      throw error;
+    }
+
+    console.log('data: ', data);
+  }
+  );
+}
+
+const mapValues = ({ header, index, value }) => {
+  switch (header) {
+    case 'count':
+    case 'price':
+      return Number(value);
+    default:
+      return value;
+  }
+};
+
 const parseCsvFile = (client: S3Client, params: ImportFileBucketParams, uploadedData: GetObjectCommandOutput) => {
   return new Promise((resolve, reject) => {
     uploadedData.Body
-      .pipe(csv())
-      .on('data', data => console.log(data))
+      .pipe(stripBom())
+      .pipe(csv({ mapValues }))
+      .on('data', data => sendMessageToSQS(params, data))
       .on('end', async () => {
         await moveParsedFiles(client, params);
         return resolve('Success');
@@ -29,8 +59,8 @@ const parseCsvFile = (client: S3Client, params: ImportFileBucketParams, uploaded
   });
 }
 
-export const parseBucketFiles = async (region: string, params: ImportFileBucketParams): Promise<unknown> => {
-  const { bucket, key } = params;
+export const parseBucketFiles = async (params: ImportFileBucketParams): Promise<unknown> => {
+  const { bucket, key, region } = params;
 
   const client = new S3Client({ region });
   const command = new GetObjectCommand({ Bucket: bucket, Key: key });

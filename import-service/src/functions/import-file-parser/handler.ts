@@ -10,8 +10,7 @@ const importFileParser = async (event: S3Event) => {
     const readFiles = event.Records
       .filter((({ s3 }) => s3.object.size))
       .map(async record => await parseBucketFiles(
-        REGION,
-        { bucket: BUCKET, key: record.s3.object.key, destinationKey: PARSED_KEY }
+        { region: REGION, bucket: BUCKET, key: record.s3.object.key, destinationKey: PARSED_KEY }
       ));
 
     await Promise.all(readFiles);

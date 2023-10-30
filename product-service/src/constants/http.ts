@@ -19,6 +19,7 @@ export enum ErrorName {
 
 export const ErrorMessages = {
   invalidId: 'Invalid ID parameter',
+  noBody: 'No product data to create',
   internalServerError: 'Internal server error',
   productNotFound: (id) => `Product with id = ${id} is not found`
 }

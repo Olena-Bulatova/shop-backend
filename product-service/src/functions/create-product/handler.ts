@@ -14,7 +14,7 @@ const createProductsHandler: ValidatedEventAPIGatewayProxyEvent<ProductInfo> = a
     const productInfo = event.body as ProductInfo;
 
     if (!productInfo) {
-      throw new HttpErrorResponse(StatusCode.BAD_REQUEST, ErrorName.BAD_REQUEST, ErrorMessages.invalidId);
+      throw new HttpErrorResponse(StatusCode.BAD_REQUEST, ErrorName.BAD_REQUEST, ErrorMessages.noBody);
     }
 
     const validationErrors = productQuerySchema.validate(productInfo)?.error;

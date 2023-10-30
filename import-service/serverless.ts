@@ -5,7 +5,7 @@ import { importFileParser, importProductsFile } from '@functions/index';
 
 dotenv.config();
 
-const { REGION, BUCKET, KEY, PARSED_KEY } = process.env;
+const { REGION, BUCKET, KEY, PARSED_KEY, SQS_URL } = process.env;
 
 const serverlessConfiguration: AWS = {
   service: 'import-service',
@@ -30,6 +30,16 @@ const serverlessConfiguration: AWS = {
             Effect: 'Allow',
             Action: ['s3:*'],
             Resource: [`arn:aws:s3:::${BUCKET}/*`]
+          },
+          {
+            Effect: 'Allow',
+            Action: [
+              'sqs:DeleteMessage',
+              'sqs:GetQueueAttributes',
+              'sqs:ReceiveMessage',
+              'sqs:SendMessage',
+            ],
+            Resource: [`arn:aws:sqs:${REGION}:109193798746:catalog-items-queue`]
           }
         ]
       }
@@ -40,7 +50,8 @@ const serverlessConfiguration: AWS = {
       REGION,
       BUCKET,
       KEY,
-      PARSED_KEY
+      PARSED_KEY,
+      SQS_URL
     },
     stage: 'dev',
     region: 'eu-west-1',
