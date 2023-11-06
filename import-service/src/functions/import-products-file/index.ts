@@ -7,7 +7,13 @@ export default {
       http: {
         method: 'get',
         path: 'import',
-        cors: true
+        cors: true,
+        authorizer: {
+          name: '${self:custom.authorizers.basicAuthorizer.name}',
+          arn: '${self:custom.authorizers.basicAuthorizer.arn}',
+          type: '${self:custom.authorizers.basicAuthorizer.type}',
+          resultTtlInSeconds: 0
+      },
       },
     },
   ],
