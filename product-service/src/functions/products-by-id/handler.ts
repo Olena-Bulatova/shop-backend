@@ -6,7 +6,7 @@ import { Product } from '../../types/products';
 import { getProductsById } from '../../utils/products';
 import { middyfy } from '@libs/lambda';
 
-const getProductsByIdHandler: ValidatedEventAPIGatewayProxyEvent<null> = async (event) => {
+export const getProductsByIdHandler: ValidatedEventAPIGatewayProxyEvent<null> = async (event) => {
   console.log('getProductsByIdHandler event:', event);
 
   try {

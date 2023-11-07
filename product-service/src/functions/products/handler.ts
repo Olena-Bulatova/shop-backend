@@ -6,7 +6,7 @@ import { HttpErrorResponse } from '../../validations/http-error-response';
 import { Product } from '../../types/products';
 import { middyfy } from '@libs/lambda';
 
-const getProductsHandler: ValidatedEventAPIGatewayProxyEvent<null> = async (event) => {
+export const getProductsHandler: ValidatedEventAPIGatewayProxyEvent<null> = async (event) => {
   console.log('getProductsHandler, event:', event);
 
   try {

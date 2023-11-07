@@ -3,9 +3,10 @@ import { QueryCommand, ScanCommand } from '@aws-sdk/lib-dynamodb';
 import { docClient } from './db-connect';
 import { v4 as uuidv4 } from 'uuid';
 import { DEFAULT_POSTER_PATH } from 'src/constants/poster';
-import { TransactWriteItemsCommand } from '@aws-sdk/client-dynamodb';
+import { TransactWriteItem, TransactWriteItemsCommand } from '@aws-sdk/client-dynamodb';
 import { marshall } from '@aws-sdk/util-dynamodb';
 import { getStocksByProductId } from './stocks';
+import { SNS } from 'aws-sdk';
 
 
 export const getProducts = async () => {
@@ -29,34 +30,71 @@ export const getProductsById = async (id: string) => {
   return getFullProductInfo(product);
 };
 
-export const createProduct = async ({ count, description, title, price, posterPath }: ProductInfo) => {
+const prepareDataToCreateProduct = ({ count, description, title, price, posterPath }: ProductInfo) => {
   const id = uuidv4();
-  const newProduct = { id, title, description, price, posterPath: posterPath || DEFAULT_POSTER_PATH };
+  const newProduct = { id, title, description, price, poster_path: posterPath || DEFAULT_POSTER_PATH };
   const newStock = { product_id: id, count };
-  const command = new TransactWriteItemsCommand(
+  return [
     {
-      TransactItems: [
-        {
-          Put: {
-            Item: marshall(newProduct),
-            TableName: process.env.PRODUCTS_TABLE_NAME
-          }
-        },
-        {
-          Put: {
-            Item: marshall(newStock),
-            TableName: process.env.STOCKS_TABLE_NAME
-          }
-        }
-      ]
+      Put: {
+        Item: marshall(newProduct),
+        TableName: process.env.PRODUCTS_TABLE_NAME
+      }
+    },
+    {
+      Put: {
+        Item: marshall(newStock),
+        TableName: process.env.STOCKS_TABLE_NAME
+      }
     }
-  );
+  ];
+};
+
+export const sendTransactWriteItemsCommand = async (items: TransactWriteItem[]) => {
+  const command = new TransactWriteItemsCommand({ TransactItems: [...items] });
 
   await docClient.send(command);
+};
+
+export const createProduct = async (product: ProductInfo) => {
+  const items = prepareDataToCreateProduct(product);
+  await sendTransactWriteItemsCommand(items);
+};
+
+export const createBatchProducts = async (products: ProductInfo[]) => {
+  const items = products.reduce((acc, product) => [...acc, ...prepareDataToCreateProduct(product)], []);
+  await sendTransactWriteItemsCommand(items);
 };
 
 const getFullProductInfo = async (product) => {
   const stocksCount = await getStocksByProductId(product.id);
 
   return { ...product, posterPath: product.poster_path, count: stocksCount || 0 };
+}
+
+export const notifyAboutCreation = (region: string, products: ProductInfo[]) => {
+  const sns = new SNS({ region });
+
+  const publishProducts = products.reduce((acc, product) => {
+    const params = {
+      Subject: 'Product creation notification',
+      Message: `Product ${product.title} is created successfully!`,
+      MessageAttributes: {
+        price: { DataType: 'Number', StringValue: product.price.toString() },
+      },
+      TopicArn: process.env.SNS_ARN,
+    };
+
+    const publishSns = sns.publish(params, (error, data) => {
+      if (error) {
+        console.log('error: ', error);
+        throw error;
+      }
+      console.log('data: ', data);
+    }).promise()
+
+    return [...acc, publishSns]
+  }, []);
+
+  return Promise.all(publishProducts);
 }
