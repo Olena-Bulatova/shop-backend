@@ -1,5 +1,5 @@
 export interface ImportFileBucketParams {
-  region: string;
+  region?: string;
   bucket: string;
   key: string;
   destinationKey?: string;
